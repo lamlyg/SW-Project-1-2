@@ -20,46 +20,45 @@ public class Manager {
 
 	File file;
 	File log = new File("log.txt");
-	
+
 	BufferedReader fin;	//input stream ( for BookList.txt, command.txt )
 	BufferedWriter flog = new BufferedWriter(new FileWriter(log,true));//output stream  (for log.txt )
-	
+
 	myCollection bookcollection =new myCollection();
-	
+
 	public Manager() throws IOException {//constructor
-		
+
 	}
 
 	//Argument - cmd : file name which is opened
 	public void run(String cmd) throws IOException{
-		
+
 		file = new File(cmd);
-		
+
 		if(file.exists()) {
 			try {
 				fin = new BufferedReader(new FileReader(file));
-//
-//				FileWriter log = new FileWriter("log.txt",false);
-				
+				//
+				//				FileWriter log = new FileWriter("log.txt",false);
+
 				String s;
 				String command;//use in getting command
 				String collection;//use in getting collection info
 				String data="";//use in getting data
-				String temp1="";//use in getting data
-				String temp2="";//use in getting data
 
 				String bookname="";
 				String author="";
-				
+				String newbookname="";
+
 				StringTokenizer st; //used in token
 				StringTokenizer datatoken;//use in tokening ADD argument by '/'
-				
+
 				int countTokens=0;
 				int i=0;
 
 				/*Decode command*/
 				while((s=fin.readLine())!=null) {
-					
+
 					//solve the error : can't read command of the first sentence//
 					String text = new String(s.getBytes(),"utf-8");				//
 					text = text.replace("\uFEFF", "");							//
@@ -69,29 +68,31 @@ public class Manager {
 					System.out.println(s);
 
 					command= st.nextToken();//(get command)
+					System.out.println("===============");
 					System.out.println("command : "+command);
 
 					if(command.equals("ADD")){/*If the command is "ADD"*/
+						System.out.println("===============");
 						////start: Get 'data' argument of command 'ADD'////
 						countTokens = st.countTokens();//the number of tokencount after command
 						System.out.println(countTokens);
 
 						if(countTokens>0) {//인자가 있는지 확인
-							String temp[] = new String[countTokens];
-
+							String temp_add[] = new String[countTokens];
+							data="";//reinitialize
 							for(i=0;i<countTokens;i++) {
-								temp[i]=st.nextToken();
-								System.out.println(temp[i]);
+								temp_add[i]=st.nextToken();
+								System.out.println(temp_add[i]);
 							}
 
 							for(i=0;i<countTokens-1;i++) {
-								data = data+temp[i]+" ";
+								data = data+temp_add[i]+" ";
 							}
-							data=data+temp[i];
+							data=data+temp_add[i];
 							////end: Get 'data' argument of command 'ADD'////
 							System.out.println("data : "+data);
 							System.out.println(s);
-							
+
 							if(data.contains("/")){
 								datatoken = new StringTokenizer(data, "/");							
 								bookname=datatoken.nextToken();
@@ -103,7 +104,7 @@ public class Manager {
 							else {
 								LOGPRINTERROR("100");
 							}
-							
+
 							flog.newLine();							
 							flog.write("========= ADD =========");
 							flog.newLine();
@@ -111,7 +112,7 @@ public class Manager {
 							flog.newLine();
 							flog.write("=======================");
 							flog.newLine();	
-												
+
 						}
 						else {//Error case in 'ADD' : lack of argument 
 							System.out.println("ERROR : 100");//-> log.txt로
@@ -119,6 +120,7 @@ public class Manager {
 						}
 					}
 					else if(command.equals("PRINT")){/*If the command is "PRINT"*/
+						System.out.println("===============");
 						countTokens = st.countTokens();
 						System.out.println(countTokens);
 
@@ -152,7 +154,7 @@ public class Manager {
 							System.out.println("ERROR : 200");
 							LOGPRINTERROR("200");
 						}
-						
+
 						flog.newLine();
 						flog.write("========= PRINT =========");
 						flog.newLine();
@@ -160,67 +162,101 @@ public class Manager {
 						flog.newLine();
 						flog.write("=========================");
 						flog.newLine();
-						
+
 
 					}
 					else if(command.equals("SEARCH")) {/*If the command is "SEARCH"*/
-						countTokens = st.countTokens();
-						System.out.println(countTokens);
-						System.out.println(s);
-
+						System.out.println("===============");
 
 						collection = st.nextToken();//i==1 (get the kind of collection)
 						System.out.println("collection : "+collection);
-
+						
 						////start: Get 'data' argument of command 'SEARCH'////
-						data="";
-						temp1=st.nextToken();//i==2
-						for(i=3;i<countTokens;i++) {
-							temp2=st.nextToken();
-							temp2=" "+temp2;
-						}
-						data = temp1 + temp2;
-						////end: Get 'data' argument of command 'SEARCH'////
-
-						System.out.println("data : "+data);
-
-						if(collection.equals("AL")){//ArrayList
-						}
-						else if(collection.equals("LL")){//LinkedList
-						}
-						else if(collection.equals("HS")){//HashSet
-						}
-						else if(collection.equals("TS")){//TreeSet
-						}
-						else if(collection.equals("HM")){//HashMap
-						}
-						else if(collection.equals("TM")){//TreeMap
-						}
-						else {//ERROR : incorrect collection
-							System.out.println("ERROR : 300");
-							LOGPRINTERROR("300");
-						}
-						
-						flog.newLine();
-						flog.write("========= SEARCH =========");
-						flog.newLine();
-						//flog.write("+ "+data);
-						flog.newLine();
-						flog.write("==========================");
-						flog.newLine();							
-						
-					}
-					else if(command.equals("UPDATE")) {/*If the command is "UPDATE"*/
-						countTokens = st.countTokens();
+						countTokens = st.countTokens();//the number of tokencount after command
 						System.out.println(countTokens);
 
-						if(countTokens>=1) {
-							temp1 = st.nextToken(); //i==1
-							System.out.println(temp1);
+						if(countTokens>0) {//인자가 있는지 확인
+							String temp_search[] = new String[countTokens];
+							data="";
+							for(i=0;i<countTokens;i++) {
+								temp_search[i]=st.nextToken();
+								System.out.println(temp_search[i]);
+							}
+
+							for(i=0;i<countTokens-1;i++) {
+								data = data+temp_search[i]+" ";
+							}
+							data=data+temp_search[i];
+							////end: Get 'data' argument of command 'SEARCH'////
+							System.out.println("data : "+data);
+
+							if(collection.equals("AL")){//ArrayList
+							}
+							else if(collection.equals("LL")){//LinkedList
+							}
+							else if(collection.equals("HS")){//HashSet
+							}
+							else if(collection.equals("TS")){//TreeSet
+							}
+							else if(collection.equals("HM")){//HashMap
+							}
+							else if(collection.equals("TM")){//TreeMap
+							}
+							else {//ERROR : incorrect collection
+								System.out.println("ERROR : 300");
+								LOGPRINTERROR("300");
+							}
+
+							flog.newLine();
+							flog.write("========= SEARCH =========");
+							flog.newLine();
+							//flog.write("+ "+data);
+							flog.newLine();
+							flog.write("==========================");
+							flog.newLine();							
+						}
+						else {
+							LOGPRINTERROR("300");
+						}
+					}
+					else if(command.equals("UPDATE")) {/*If the command is "UPDATE"*/
+						System.out.println("===============");
+						
+						////start: Get 'data' argument of command 'UPDATE'////
+						countTokens = st.countTokens();//the number of tokencount after command
+						System.out.println(countTokens);
+
+						if(countTokens>0) {//인자가 있는지 확인
+							String temp_update[] = new String[countTokens];
+							data="";
+							for(i=0;i<countTokens;i++) {
+								temp_update[i]=st.nextToken();
+								System.out.println(temp_update[i]);
+							}
+
+							for(i=0;i<countTokens-1;i++) {
+								data = data+temp_update[i]+" ";
+							}
+							data=data+temp_update[i];
+							
+							if(data.contains("/")){
+								datatoken = new StringTokenizer(data, "/");							
+								bookname=datatoken.nextToken();
+								newbookname=datatoken.nextToken();
+								System.out.println("책이름 :"+bookname);
+								System.out.println("업데이트 :"+newbookname);
+								
+							}
+							else {//ERROR : no argument about update bookname
+								LOGPRINTERROR("400");
+							}
+							////end: Get 'data' argument of command 'UPDATE'////
+							
+							System.out.println("data : "+data);
 							flog.newLine();
 							flog.write("========= UPDATE =========");
 							flog.newLine();
-//							flog.write("300");
+							//							flog.write("300");
 							flog.newLine();
 							flog.write("==========================");
 							flog.newLine();
@@ -259,16 +295,16 @@ public class Manager {
 	}
 
 	public boolean ADD(String title,String author) throws IOException{
-		
+
 		BookNode book = new BookNode();
 		book.setTitle(title);
 		book.setAuthor(author);
-		
+
 		bookcollection.addNode(book);
-		
+
 		return true;
 	}
-	
+
 	public boolean PRINT() throws IOException{
 
 		return true;
@@ -281,7 +317,7 @@ public class Manager {
 
 		return true;
 	}
-	
+
 	public void LOGPRINTERROR(String code) throws IOException{
 		flog.newLine();
 		flog.write("========= ERROR =========");
