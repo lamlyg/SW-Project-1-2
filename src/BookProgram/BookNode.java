@@ -21,9 +21,9 @@ public class BookNode {
 
 	}
 	public String getTitle() {
-		return "";
+		return this.title;
 	}
 	public String getAuthor() {
-		return "";
+		return this.author;
 	}
 }
