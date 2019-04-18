@@ -1,5 +1,7 @@
 ﻿ADD 러닝 스파크/홀든 카로
 PRINT AL
+ADD 머신 러닝/스티븐 잡스
+PRINT AL
 SEARCH AL 러닝 스파크
 UPDATE 러닝 스파크/러닝 하둡
 PRINT HS

@@ -25,6 +25,7 @@ public class myCollection {
 		ll = new LinkedList<BookNode>();
 		hs = new HashSet<BookNode>();
 		ts = new TreeSet<BookNode>(new TreesetComparator());
+
 		hm = new HashMap<String, String>();
 		tm = new TreeMap<String, String>();
 	}
@@ -34,17 +35,39 @@ public class myCollection {
 		al.add(book);
 		ll.add(book);
 		hs.add(book);
-		if(ts.isEmpty()) {
-			ts.headSet(book);
-		}
-		else {
-			ts.add(book);
-		}
+		//		if(ts.isEmpty()) {
+		//			ts.headSet(book);
+		//		}
+		//		else {
+		//			ts.add(book);
+		//		}
+		ts.add(book);
 		hm.put(book.getTitle(), book.getAuthor());
 		tm.put(book.getTitle(), book.getAuthor());
 	}
 	/*Print method*/
-	public String printNode() {
+	public String printNode(String collection) {
+		String node;
+
+		if(collection.equals("AL")) {
+			
+			Collections.sort(al, new Comparator<BookNode>() {
+
+				@Override
+				public int compare(BookNode node1, BookNode node2) {
+					// TODO Auto-generated method stub
+					String title1 = node1.getTitle();
+					String title2 = node2.getTitle();
+
+					return title1.compareTo(title2);
+				}
+			});
+
+			for(int i=0; i<al.size();i++) {			
+				node=al.get(i).getTitle()+"/"+al.get(i).getAuthor();
+				System.out.println(node);
+			}
+		}
 		return "";
 	}
 	/*Search method*/
@@ -59,6 +82,7 @@ public class myCollection {
 	}
 }
 
+
 //TreeSet-Comparator to ADD BookNode  
 class TreesetComparator implements Comparator<BookNode>{
 
@@ -67,7 +91,7 @@ class TreesetComparator implements Comparator<BookNode>{
 		// TODO Auto-generated method stub
 		String title1 = node1.getTitle();
 		String title2 = node2.getTitle();
-	
+
 		return title1.compareTo(title2);
 	}
 

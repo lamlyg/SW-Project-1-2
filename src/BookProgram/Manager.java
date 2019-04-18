@@ -22,7 +22,7 @@ public class Manager {
 	File log = new File("log.txt");
 
 	BufferedReader fin;	//input stream ( for BookList.txt, command.txt )
-	BufferedWriter flog = new BufferedWriter(new FileWriter(log,true));//output stream  (for log.txt )
+	BufferedWriter flog = new BufferedWriter(new FileWriter(log,false));//output stream  (for log.txt )
 
 	myCollection bookcollection =new myCollection();
 
@@ -99,20 +99,23 @@ public class Manager {
 								author=datatoken.nextToken();
 								System.out.println("책이름 :"+bookname);
 								System.out.println("저자 :"+author);
-								ADD(bookname, author);
+
+								if(ADD(bookname, author)) {
+									flog.newLine();							
+									flog.write("========= ADD =========");
+									flog.newLine();
+									flog.write("+ "+data);
+									flog.newLine();
+									flog.write("=======================");
+									flog.newLine();										
+								}
+								else {
+									LOGPRINTERROR("100");
+								}
 							}
 							else {
 								LOGPRINTERROR("100");
 							}
-
-							flog.newLine();							
-							flog.write("========= ADD =========");
-							flog.newLine();
-							//flog.write("+ "+data);
-							flog.newLine();
-							flog.write("=======================");
-							flog.newLine();	
-
 						}
 						else {//Error case in 'ADD' : lack of argument 
 							System.out.println("ERROR : 100");//-> log.txt로
@@ -128,26 +131,50 @@ public class Manager {
 							collection = st.nextToken();//i==1 (get the kind of collection)
 							System.out.println("collection : "+collection);
 							if(collection.equals("AL")){//ArrayList
+								if(PRINT("AL")){
+								}
+								else {
+									LOGPRINTERROR("200");
+								}
 							}
 							else if(collection.equals("LL")){//LinkedList
+								if(PRINT("LL")){
+								}
+								else {
+									LOGPRINTERROR("200");
+								}
 							}
 							else if(collection.equals("HS")){//HashSet
+								if(PRINT("HS")){
+								}
+								else {
+									LOGPRINTERROR("200");
+								}
 							}
 							else if(collection.equals("TS")){//TreeSet
+								if(PRINT("TS")){
+								}
+								else {
+									LOGPRINTERROR("200");
+								}
 							}
 							else if(collection.equals("HM")){//HashMap
+								if(PRINT("HM")){
+								}
+								else {
+									LOGPRINTERROR("200");
+								}
 							}
 							else if(collection.equals("TM")){//TreeMap
+								if(PRINT("TM")){
+								}
+								else {
+									LOGPRINTERROR("200");
+								}
 							}
 							else {//incorrect collection
 								System.out.println("ERROR : 200");
-								flog.newLine();
-								flog.write("========= ERROR =========");
-								flog.newLine();
-								flog.write("200");
-								flog.newLine();
-								flog.write("=========================");
-								flog.newLine();
+								LOGPRINTERROR("200");
 							}
 						}
 						else {
@@ -170,7 +197,7 @@ public class Manager {
 
 						collection = st.nextToken();//i==1 (get the kind of collection)
 						System.out.println("collection : "+collection);
-						
+
 						////start: Get 'data' argument of command 'SEARCH'////
 						countTokens = st.countTokens();//the number of tokencount after command
 						System.out.println(countTokens);
@@ -191,16 +218,40 @@ public class Manager {
 							System.out.println("data : "+data);
 
 							if(collection.equals("AL")){//ArrayList
+								if(SEARCH("AL")){
+								}
+								else {
+								}
 							}
 							else if(collection.equals("LL")){//LinkedList
+								if(SEARCH("LL")){
+								}
+								else {
+								}
 							}
 							else if(collection.equals("HS")){//HashSet
+								if(SEARCH("HS")){
+								}
+								else {
+								}
 							}
 							else if(collection.equals("TS")){//TreeSet
+								if(SEARCH("TS")){
+								}
+								else {
+								}
 							}
 							else if(collection.equals("HM")){//HashMap
+								if(SEARCH("HM")){
+								}
+								else {
+								}
 							}
 							else if(collection.equals("TM")){//TreeMap
+								if(SEARCH("TM")){
+								}
+								else {
+								}
 							}
 							else {//ERROR : incorrect collection
 								System.out.println("ERROR : 300");
@@ -221,7 +272,7 @@ public class Manager {
 					}
 					else if(command.equals("UPDATE")) {/*If the command is "UPDATE"*/
 						System.out.println("===============");
-						
+
 						////start: Get 'data' argument of command 'UPDATE'////
 						countTokens = st.countTokens();//the number of tokencount after command
 						System.out.println(countTokens);
@@ -238,20 +289,20 @@ public class Manager {
 								data = data+temp_update[i]+" ";
 							}
 							data=data+temp_update[i];
-							
+
 							if(data.contains("/")){
 								datatoken = new StringTokenizer(data, "/");							
 								bookname=datatoken.nextToken();
 								newbookname=datatoken.nextToken();
 								System.out.println("책이름 :"+bookname);
 								System.out.println("업데이트 :"+newbookname);
-								
+
 							}
 							else {//ERROR : no argument about update bookname
 								LOGPRINTERROR("400");
 							}
 							////end: Get 'data' argument of command 'UPDATE'////
-							
+
 							System.out.println("data : "+data);
 							flog.newLine();
 							flog.write("========= UPDATE =========");
@@ -295,34 +346,87 @@ public class Manager {
 	}
 
 	public boolean ADD(String title,String author) throws IOException{
+		try {
+			BookNode book = new BookNode();
+			book.setTitle(title);
+			book.setAuthor(author);
 
-		BookNode book = new BookNode();
-		book.setTitle(title);
-		book.setAuthor(author);
+			bookcollection.addNode(book);
 
-		bookcollection.addNode(book);
-
-		return true;
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
 	}
 
-	public boolean PRINT() throws IOException{
-
-		return true;
+	public boolean PRINT(String collection) throws IOException{
+		try {
+			if(collection.equals("AL")) {
+				bookcollection.printNode("AL");
+			}
+			else if(collection.equals("LL")) {
+				bookcollection.printNode("LL");
+			}
+			else if(collection.equals("HS")) {
+				bookcollection.printNode("HS");
+			}
+			else if(collection.equals("TS")) {
+				bookcollection.printNode("TS");
+			}
+			else if(collection.equals("HM")) {
+				bookcollection.printNode("HM");
+			}
+			else if(collection.equals("TM")) {
+				bookcollection.printNode("TM");
+			}
+			else {
+				return false;
+			}
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
 	}
-	public boolean SEARCH() throws IOException{
-
-		return true;
+	public boolean SEARCH(String collection) throws IOException{
+		try {
+			if(collection.equals("AL")) {
+			}
+			else if(collection.equals("LL")) {
+			}
+			else if(collection.equals("HS")) {
+			}
+			else if(collection.equals("TS")) {
+			}
+			else if(collection.equals("HM")) {
+			}
+			else if(collection.equals("TM")) {
+			}
+			else {
+				return false;
+			}
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
 	}
-	public boolean UPDATE() throws IOException{
-
-		return true;
+	public boolean UPDATE(String beforename, String aftername) throws IOException{
+		try {
+			
+			return true;
+		}
+		catch(Exception e) {
+			return false;
+		}
 	}
 
-	public void LOGPRINTERROR(String code) throws IOException{
+	public void LOGPRINTERROR(String errorcode) throws IOException{
 		flog.newLine();
 		flog.write("========= ERROR =========");
 		flog.newLine();
-		flog.write(code);
+		flog.write(errorcode);
 		flog.newLine();
 		flog.write("=========================");
 		flog.newLine();
