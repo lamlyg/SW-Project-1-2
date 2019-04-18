@@ -9,6 +9,7 @@ package BookProgram;
 
 import java.util.*;
 
+
 public class myCollection {
 
 	//Collectiion
@@ -20,12 +21,23 @@ public class myCollection {
 	private TreeMap<String, String> tm; //Key : title, value : author
 
 	public myCollection(){
-
+		al = new ArrayList<BookNode>();
+		ll = new LinkedList<BookNode>();
+		hs = new HashSet<BookNode>();
+		ts = new TreeSet<BookNode>();
+		hm = new HashMap<String, String>();
+		tm = new TreeMap<String, String>();
 	}
 
 	/*Push method*/
-	public void addNode() {
-
+	public void addNode(BookNode book){
+		al.add(book);
+		ll.add(book);
+		hs.add(book);
+//		ts.add(book);
+		
+		hm.put(book.getTitle(), book.getAuthor());
+		tm.put(book.getTitle(), book.getAuthor());
 	}
 	/*Print method*/
 	public String printNode() {

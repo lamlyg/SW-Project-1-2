@@ -23,8 +23,11 @@ public class Manager {
 	
 	BufferedReader fin;	//input stream ( for BookList.txt, command.txt )
 	BufferedWriter flog = new BufferedWriter(new FileWriter(log,true));//output stream  (for log.txt )
-
+	
+	myCollection bookcollection =new myCollection();
+	
 	public Manager() throws IOException {//constructor
+		
 	}
 
 	//Argument - cmd : file name which is opened
@@ -45,8 +48,12 @@ public class Manager {
 				String temp1="";//use in getting data
 				String temp2="";//use in getting data
 
+				String bookname="";
+				String author="";
+				
 				StringTokenizer st; //used in token
 				StringTokenizer datatoken;//use in tokening ADD argument by '/'
+				
 				int countTokens=0;
 				int i=0;
 
@@ -85,6 +92,17 @@ public class Manager {
 							System.out.println("data : "+data);
 							System.out.println(s);
 							
+							if(data.contains("/")){
+								datatoken = new StringTokenizer(data, "/");							
+								bookname=datatoken.nextToken();
+								author=datatoken.nextToken();
+								System.out.println("책이름 :"+bookname);
+								System.out.println("저자 :"+author);
+								ADD(bookname, author);
+							}
+							else {
+								LOGPRINTERROR("100");
+							}
 							
 							flog.newLine();							
 							flog.write("========= ADD =========");
@@ -97,15 +115,7 @@ public class Manager {
 						}
 						else {//Error case in 'ADD' : lack of argument 
 							System.out.println("ERROR : 100");//-> log.txt로
-
-							flog.newLine();
-							flog.write("========= ERROR =========");
-							flog.newLine();
-							flog.write("100");
-							flog.newLine();
-							flog.write("=========================");
-							flog.newLine();
-
+							LOGPRINTERROR("100");
 						}
 					}
 					else if(command.equals("PRINT")){/*If the command is "PRINT"*/
@@ -140,13 +150,7 @@ public class Manager {
 						}
 						else {
 							System.out.println("ERROR : 200");
-							flog.newLine();
-							flog.write("========= ERROR =========");
-							flog.newLine();
-							flog.write("200");
-							flog.newLine();
-							flog.write("=========================");
-							flog.newLine();
+							LOGPRINTERROR("200");
 						}
 						
 						flog.newLine();
@@ -194,13 +198,7 @@ public class Manager {
 						}
 						else {//ERROR : incorrect collection
 							System.out.println("ERROR : 300");
-							flog.newLine();
-							flog.write("========= ERROR =========");
-							flog.newLine();
-							flog.write("300");
-							flog.newLine();
-							flog.write("=========================");
-							flog.newLine();
+							LOGPRINTERROR("300");
 						}
 						
 						flog.newLine();
@@ -229,25 +227,17 @@ public class Manager {
 						}
 						else {//ERROR : no argument
 							System.out.println("ERROR : 400");
-							flog.newLine();
-							flog.write("========= ERROR =========");
-							flog.newLine();
-							flog.write("400");
-							flog.newLine();
-							flog.write("=========================");
-							flog.newLine();
+							LOGPRINTERROR("400");
 						}
 					}
 					else if(command.equals("EXIT")){/*If the command is "EXIT"*/
-						
 						flog.newLine();
-						flog.write("========= EXIT =========");
+						flog.write("========== EXIT ==========");
 						flog.newLine();
 						flog.write("Success");
 						flog.newLine();
-						flog.write("=========================");
+						flog.write("==========================");
 						flog.newLine();
-						
 					}
 					else{/*If the command is unknown*/
 						System.out.println("Error : Unknown command");
@@ -268,10 +258,17 @@ public class Manager {
 
 	}
 
-	public boolean ADD() throws IOException{
-			
+	public boolean ADD(String title,String author) throws IOException{
+		
+		BookNode book = new BookNode();
+		book.setTitle(title);
+		book.setAuthor(author);
+		
+		bookcollection.addNode(book);
+		
 		return true;
 	}
+	
 	public boolean PRINT() throws IOException{
 
 		return true;
@@ -283,5 +280,15 @@ public class Manager {
 	public boolean UPDATE() throws IOException{
 
 		return true;
+	}
+	
+	public void LOGPRINTERROR(String code) throws IOException{
+		flog.newLine();
+		flog.write("========= ERROR =========");
+		flog.newLine();
+		flog.write(code);
+		flog.newLine();
+		flog.write("=========================");
+		flog.newLine();
 	}
 }
