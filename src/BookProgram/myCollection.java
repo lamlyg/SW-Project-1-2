@@ -1,5 +1,8 @@
 package BookProgram;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 /*
 @class myCollection
 @date 2019/04/17~04/27
@@ -46,33 +49,145 @@ public class myCollection {
 		tm.put(book.getTitle(), book.getAuthor());
 	}
 	/*Print method*/
-	public String printNode(String collection) {
+	public void printNode(String collection, BufferedWriter flog){
 		String node;
+		try {
+			if(collection.equals("AL")) {
+				Collections.sort(al, new Comparator<BookNode>() {
 
-		if(collection.equals("AL")) {
-			
-			Collections.sort(al, new Comparator<BookNode>() {
+					@Override
+					public int compare(BookNode node1, BookNode node2) {
+						// TODO Auto-generated method stub
+						String title1 = node1.getTitle();
+						String title2 = node2.getTitle();
 
-				@Override
-				public int compare(BookNode node1, BookNode node2) {
-					// TODO Auto-generated method stub
-					String title1 = node1.getTitle();
-					String title2 = node2.getTitle();
-
-					return title1.compareTo(title2);
+						return title1.compareTo(title2);
+					}
+				});
+				
+				flog.newLine();
+				flog.write("========= PRINT =========");
+				flog.newLine();
+				for(int i=0; i<al.size();i++) {			
+					node=al.get(i).getTitle()+"/"+al.get(i).getAuthor();
+					System.out.println(node);
+					flog.write(node);					
+					flog.newLine();
 				}
-			});
-
-			for(int i=0; i<al.size();i++) {			
-				node=al.get(i).getTitle()+"/"+al.get(i).getAuthor();
-				System.out.println(node);
+				flog.write("=========================");
+				flog.newLine();
 			}
+			else if(collection.equals("LL")) {
+				
+				Collections.sort(ll, new Comparator<BookNode>() {
+
+					@Override
+					public int compare(BookNode node1, BookNode node2) {
+						// TODO Auto-generated method stub
+						String title1 = node1.getTitle();
+						String title2 = node2.getTitle();
+
+						return title1.compareTo(title2);
+					}
+				});
+				
+				flog.newLine();
+				flog.write("========= PRINT =========");
+				flog.newLine();
+				for(int i=0; i<ll.size();i++) {			
+					node=ll.get(i).getTitle()+"/"+ll.get(i).getAuthor();
+					System.out.println(node);
+					flog.write(node);					
+					flog.newLine();
+				}
+				flog.write("=========================");
+				flog.newLine();
+			}
+			else if(collection.equals("HS")) {//no sort
+				Iterator<BookNode> iterator = hs.iterator();
+				
+				flog.newLine();
+				flog.write("========= PRINT =========");
+				flog.newLine();
+				while(iterator.hasNext()) {
+					BookNode book = (BookNode) iterator.next();
+					node = book.getTitle()+"/"+book.getAuthor();
+					System.out.println(node);
+					flog.write(node);					
+					flog.newLine();
+				}
+				flog.write("=========================");
+				flog.newLine();
+			}
+			else if(collection.equals("TS")) {
+				Iterator<BookNode> iterator = ts.iterator();
+				
+				flog.newLine();
+				flog.write("========= PRINT =========");
+				flog.newLine();
+				while(iterator.hasNext()) {
+					BookNode book = (BookNode) iterator.next();
+					node = book.getTitle()+"/"+book.getAuthor();
+					System.out.println(node);
+					flog.write(node);					
+					flog.newLine();
+				}
+				flog.write("=========================");
+				flog.newLine();
+			}
+			else if(collection.equals("HM")) {//no sort
+				//get
+				Set<String> keyset = tm.keySet();
+				Iterator<String> iterator = keyset.iterator();
+				
+				String k;
+				String v;
+				
+				flog.newLine();
+				flog.write("========= PRINT =========");
+				flog.newLine();
+				while(iterator.hasNext()) {
+					k=(String)iterator.next();
+					v=(String)tm.get(k);
+					node = k+"/"+v;
+					System.out.println(node);
+					flog.write(node);					
+					flog.newLine();
+				}
+				flog.write("=========================");
+				flog.newLine();
+			}
+			else if(collection.equals("TM")) {
+				Set<String> keyset = tm.keySet();
+				Iterator<String> iterator = keyset.iterator();
+				
+				String k;
+				String v;
+				
+				flog.newLine();
+				flog.write("========= PRINT =========");
+				flog.newLine();
+				while(iterator.hasNext()) {
+					k=(String)iterator.next();
+					v=(String)tm.get(k);
+					node = k+"/"+v;
+					System.out.println(node);
+					flog.write(node);					
+					flog.newLine();
+				}
+				flog.write("=========================");
+				flog.newLine();
+			}
+			
 		}
-		return "";
+		catch(Exception e){
+			System.out.println("ERROR : PRINT");
+		}
 	}
 	/*Search method*/
-	public String searchNode() {
-
+	public String searchNode(String searchnode) {
+		
+		
 		return "";
 	}
 	/*Update method*/
@@ -80,6 +195,7 @@ public class myCollection {
 
 		return "";
 	}
+
 }
 
 

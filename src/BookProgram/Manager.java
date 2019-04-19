@@ -100,7 +100,7 @@ public class Manager {
 								System.out.println("책이름 :"+bookname);
 								System.out.println("저자 :"+author);
 
-								if(ADD(bookname, author)) {
+								if(ADD(bookname, author)==true) {
 									flog.newLine();							
 									flog.write("========= ADD =========");
 									flog.newLine();
@@ -131,44 +131,32 @@ public class Manager {
 							collection = st.nextToken();//i==1 (get the kind of collection)
 							System.out.println("collection : "+collection);
 							if(collection.equals("AL")){//ArrayList
-								if(PRINT("AL")){
-								}
-								else {
+								if(PRINT("AL")==false){
 									LOGPRINTERROR("200");
 								}
 							}
 							else if(collection.equals("LL")){//LinkedList
-								if(PRINT("LL")){
-								}
-								else {
+								if(PRINT("LL")==false){
 									LOGPRINTERROR("200");
 								}
 							}
 							else if(collection.equals("HS")){//HashSet
-								if(PRINT("HS")){
-								}
-								else {
+								if(PRINT("HS")==false){
 									LOGPRINTERROR("200");
 								}
 							}
 							else if(collection.equals("TS")){//TreeSet
-								if(PRINT("TS")){
-								}
-								else {
+								if(PRINT("TS")==false) {
 									LOGPRINTERROR("200");
 								}
 							}
 							else if(collection.equals("HM")){//HashMap
-								if(PRINT("HM")){
-								}
-								else {
+								if(PRINT("HM")==false){
 									LOGPRINTERROR("200");
 								}
 							}
 							else if(collection.equals("TM")){//TreeMap
-								if(PRINT("TM")){
-								}
-								else {
+								if(PRINT("TM")==false){
 									LOGPRINTERROR("200");
 								}
 							}
@@ -182,13 +170,7 @@ public class Manager {
 							LOGPRINTERROR("200");
 						}
 
-						flog.newLine();
-						flog.write("========= PRINT =========");
-						flog.newLine();
-						//flog.write("+ "+data);
-						flog.newLine();
-						flog.write("=========================");
-						flog.newLine();
+						
 
 
 					}
@@ -218,37 +200,37 @@ public class Manager {
 							System.out.println("data : "+data);
 
 							if(collection.equals("AL")){//ArrayList
-								if(SEARCH("AL")){
+								if(SEARCH("AL")==true){
 								}
 								else {
 								}
 							}
 							else if(collection.equals("LL")){//LinkedList
-								if(SEARCH("LL")){
+								if(SEARCH("LL")==true){
 								}
 								else {
 								}
 							}
 							else if(collection.equals("HS")){//HashSet
-								if(SEARCH("HS")){
+								if(SEARCH("HS")==true){
 								}
 								else {
 								}
 							}
 							else if(collection.equals("TS")){//TreeSet
-								if(SEARCH("TS")){
+								if(SEARCH("TS")==true){
 								}
 								else {
 								}
 							}
 							else if(collection.equals("HM")){//HashMap
-								if(SEARCH("HM")){
+								if(SEARCH("HM")==true){
 								}
 								else {
 								}
 							}
 							else if(collection.equals("TM")){//TreeMap
-								if(SEARCH("TM")){
+								if(SEARCH("TM")==true){
 								}
 								else {
 								}
@@ -362,33 +344,16 @@ public class Manager {
 
 	public boolean PRINT(String collection) throws IOException{
 		try {
-			if(collection.equals("AL")) {
-				bookcollection.printNode("AL");
-			}
-			else if(collection.equals("LL")) {
-				bookcollection.printNode("LL");
-			}
-			else if(collection.equals("HS")) {
-				bookcollection.printNode("HS");
-			}
-			else if(collection.equals("TS")) {
-				bookcollection.printNode("TS");
-			}
-			else if(collection.equals("HM")) {
-				bookcollection.printNode("HM");
-			}
-			else if(collection.equals("TM")) {
-				bookcollection.printNode("TM");
-			}
-			else {
-				return false;
-			}
+			//String booknode;
+			System.out.println("======print about collection info=====");
+			bookcollection.printNode(collection, flog);
 			return true;
 		}
 		catch(Exception e) {
 			return false;
 		}
 	}
+	
 	public boolean SEARCH(String collection) throws IOException{
 		try {
 			if(collection.equals("AL")) {
