@@ -70,7 +70,7 @@ public class myCollection {
 				flog.newLine();
 				for(int i=0; i<al.size();i++) {			
 					node=al.get(i).getTitle()+"/"+al.get(i).getAuthor();
-					System.out.println(node);
+					
 					flog.write(node);					
 					flog.newLine();
 				}
@@ -96,7 +96,7 @@ public class myCollection {
 				flog.newLine();
 				for(int i=0; i<ll.size();i++) {			
 					node=ll.get(i).getTitle()+"/"+ll.get(i).getAuthor();
-					System.out.println(node);
+					
 					flog.write(node);					
 					flog.newLine();
 				}
@@ -112,7 +112,7 @@ public class myCollection {
 				while(iterator.hasNext()) {
 					BookNode book = (BookNode) iterator.next();
 					node = book.getTitle()+"/"+book.getAuthor();
-					System.out.println(node);
+					
 					flog.write(node);					
 					flog.newLine();
 				}
@@ -128,7 +128,7 @@ public class myCollection {
 				while(iterator.hasNext()) {
 					BookNode book = (BookNode) iterator.next();
 					node = book.getTitle()+"/"+book.getAuthor();
-					System.out.println(node);
+					
 					flog.write(node);					
 					flog.newLine();
 				}
@@ -150,7 +150,7 @@ public class myCollection {
 					k=(String)iterator.next();
 					v=(String)hm.get(k);
 					node = k+"/"+v;
-					System.out.println(node);
+					
 					flog.write(node);					
 					flog.newLine();
 				}
@@ -171,7 +171,6 @@ public class myCollection {
 					k=(String)iterator.next();
 					v=(String)tm.get(k);
 					node = k+"/"+v;
-					System.out.println(node);
 					flog.write(node);					
 					flog.newLine();
 				}
@@ -192,7 +191,6 @@ public class myCollection {
 			for(int i=0; i<al.size();i++) {
 				if((al.get(i).getTitle()).equals(searchnode)) {
 					val=al.get(i).getTitle()+"/"+al.get(i).getAuthor();
-					System.out.println(val);
 				}
 			}
 		}
@@ -200,7 +198,6 @@ public class myCollection {
 			for(int i=0; i<ll.size();i++) {
 				if((ll.get(i).getTitle()).equals(searchnode)) {
 					val=ll.get(i).getTitle()+"/"+ll.get(i).getAuthor();
-					System.out.println(val);
 				}
 			}
 		}
@@ -210,7 +207,6 @@ public class myCollection {
 				BookNode book = (BookNode) iterator.next();
 				if(book.getTitle().equals(searchnode)) {
 					val = book.getTitle()+"/"+book.getAuthor();
-					System.out.println(val);
 				}
 			}
 
@@ -222,7 +218,6 @@ public class myCollection {
 				BookNode book = (BookNode) iterator.next();
 				if(book.getTitle().equals(searchnode)) {
 					val = book.getTitle()+"/"+book.getAuthor();
-					System.out.println(val);
 				}
 			}
 		}
@@ -239,7 +234,6 @@ public class myCollection {
 				if(k.equals(searchnode)) {
 					v=(String)tm.get(k);
 					val = k+"/"+v;
-					System.out.println(val);
 				}
 			}
 
@@ -257,7 +251,6 @@ public class myCollection {
 				if(k.equals(searchnode)) {
 					v=(String)tm.get(k);
 					val = k+"/"+v;
-					System.out.println(val);
 				}
 			}
 

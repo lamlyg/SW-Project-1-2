@@ -19,11 +19,13 @@ import java.util.StringTokenizer;
 public class Manager {
 
 	File file;
+	File booklist = new File("BookList.txt");
 	File log = new File("log.txt");
-
+	
 	BufferedReader fin;	//input stream ( for BookList.txt, command.txt )
 	BufferedWriter flog = new BufferedWriter(new FileWriter(log,false));//output stream  (for log.txt )
-
+	BufferedReader bookin;
+	
 	myCollection bookcollection =new myCollection();
 
 	public Manager() throws IOException {//constructor
@@ -38,10 +40,10 @@ public class Manager {
 		if(file.exists()) {
 			try {
 				fin = new BufferedReader(new FileReader(file));
-				//
-				//				FileWriter log = new FileWriter("log.txt",false);
-
+				bookin = new BufferedReader(new FileReader(booklist));
+				
 				String s;
+				String book;
 				String command;//use in getting command
 				String collection;//use in getting collection info
 				String data="";//use in getting data
@@ -52,9 +54,11 @@ public class Manager {
 
 				StringTokenizer st; //used in token
 				StringTokenizer datatoken;//use in tokening ADD argument by '/'
-
+				StringTokenizer booktoken;//use in tokening the book data in BookList.txt
+				
 				int countTokens=0;
 				int datacountTokens=0;
+				int bookcountTokens=0;
 				int i=0;
 
 				/*Decode command*/
@@ -65,25 +69,42 @@ public class Manager {
 					text = text.replace("\uFEFF", "");							//
 					//solve the error : can't read command of the first sentence//
 
+					//////BookList INSERT//////
+					while((book=bookin.readLine())!=null) {
+						//solve the error : can't read command of the first sentence//
+						String booktext = new String(book.getBytes(),"utf-8");		//
+						booktext = booktext.replace("\uFEFF", "");					//
+						//solve the error : can't read command of the first sentence//
+						
+						booktoken = new StringTokenizer(book, "/");		
+						bookcountTokens = booktoken.countTokens();
+						
+						
+						if(bookcountTokens==2) {
+							bookname=booktoken.nextToken();
+							author=booktoken.nextToken();
+							
+							if((ADD(bookname, author)==false)) {
+								System.out.println("ERROR : BookList insert");									
+							}		
+						}
+					}
+					
 					st = new StringTokenizer(text, " ");//token the text in text file
-					System.out.println(s);
+					System.out.println(s);//check the commands in console
 
 					command= st.nextToken();//(get command)
-					System.out.println("===============");
-					System.out.println("command : "+command);
-
+					
 					if(command.equals("ADD")){/*If the command is "ADD"*/
-						System.out.println("===============");
+						
 						////start: Get 'data' argument of command 'ADD'////
 						countTokens = st.countTokens();//the number of tokencount after command
-						System.out.println(countTokens);
-
-						if(countTokens>0) {//인자가 있는지 확인
+						
+						if(countTokens>0) {//check the existence of the argument 
 							String temp_add[] = new String[countTokens];
 							data="";//reinitialize
 							for(i=0;i<countTokens;i++) {
 								temp_add[i]=st.nextToken();
-								System.out.println(temp_add[i]);
 							}
 
 							for(i=0;i<countTokens-1;i++) {
@@ -91,19 +112,15 @@ public class Manager {
 							}
 							data=data+temp_add[i];
 							////end: Get 'data' argument of command 'ADD'////
-							System.out.println("data : "+data);
-							System.out.println(s);
 
 							if(data.contains("/")){
 								datatoken = new StringTokenizer(data, "/");		
 								datacountTokens = datatoken.countTokens();
-								System.out.println("datacountTokens : "+datacountTokens);
 
 								if(datacountTokens==2) {
 									bookname=datatoken.nextToken();
 									author=datatoken.nextToken();
-									System.out.println("책이름 :"+bookname);
-									System.out.println("저자 :"+author);
+									
 									if((ADD(bookname, author)==true)) {
 										flog.newLine();							
 										flog.write("========= ADD =========");
@@ -133,13 +150,12 @@ public class Manager {
 						}
 					}
 					else if(command.equals("PRINT")){/*If the command is "PRINT"*/
-						System.out.println("===============");
+						
 						countTokens = st.countTokens();
-						System.out.println(countTokens);
 
 						if(countTokens==1) {//check the collection is existed
 							collection = st.nextToken();//i==1 (get the kind of collection)
-							System.out.println("collection : "+collection);
+							
 							if(collection.equals("AL")){//ArrayList
 								if(PRINT("AL")==false){
 									LOGPRINTERROR("200");
@@ -185,21 +201,17 @@ public class Manager {
 
 					}
 					else if(command.equals("SEARCH")) {/*If the command is "SEARCH"*/
-						System.out.println("===============");
-
+					
 						collection = st.nextToken();//i==1 (get the kind of collection)
-						System.out.println("collection : "+collection);
 
 						////start: Get 'data' argument of command 'SEARCH'////
 						countTokens = st.countTokens();//the number of tokencount after command
-						System.out.println(countTokens);
-
-						if(countTokens>0) {//인자가 있는지 확인
+						
+						if(countTokens>0) {//check the argument
 							String temp_search[] = new String[countTokens];
 							data="";
 							for(i=0;i<countTokens;i++) {
 								temp_search[i]=st.nextToken();
-								System.out.println(temp_search[i]);
 							}
 
 							for(i=0;i<countTokens-1;i++) {
@@ -207,61 +219,62 @@ public class Manager {
 							}
 							data=data+temp_search[i];
 							////end: Get 'data' argument of command 'SEARCH'////
-							System.out.println("data : "+data);
-
-							if(collection.equals("AL")){//ArrayList
-								if(SEARCH("AL",data)==false) {
-									LOGPRINTERROR("300");
-								}
-							}
-							else if(collection.equals("LL")){//LinkedList
-								if(SEARCH("LL",data)==false) {
-									LOGPRINTERROR("300");
-								}
-							}
-							else if(collection.equals("HS")){//HashSet
-								if(SEARCH("HS",data)==false) {
-									LOGPRINTERROR("300");
-								}
-							}
-							else if(collection.equals("TS")){//TreeSet
-								if(SEARCH("TS",data)==false) {
-									LOGPRINTERROR("300");
-								}
-							}
-							else if(collection.equals("HM")){//HashMap
-								if(SEARCH("HM",data)==false) {
-									LOGPRINTERROR("300");
-								}
-							}
-							else if(collection.equals("TM")){//TreeMap
-								if(SEARCH("TM",data)==false) {
-									LOGPRINTERROR("300");
-								}
-							}
-							else {//ERROR : incorrect collection
-								System.out.println("ERROR : 300");
+							
+							if(data.contains("/")){
 								LOGPRINTERROR("300");
 							}
+							else {
 
+								if(collection.equals("AL")){//ArrayList
+									if(SEARCH("AL",data)==false) {
+										LOGPRINTERROR("300");
+									}
+								}
+								else if(collection.equals("LL")){//LinkedList
+									if(SEARCH("LL",data)==false) {
+										LOGPRINTERROR("300");
+									}
+								}
+								else if(collection.equals("HS")){//HashSet
+									if(SEARCH("HS",data)==false) {
+										LOGPRINTERROR("300");
+									}
+								}
+								else if(collection.equals("TS")){//TreeSet
+									if(SEARCH("TS",data)==false) {
+										LOGPRINTERROR("300");
+									}
+								}
+								else if(collection.equals("HM")){//HashMap
+									if(SEARCH("HM",data)==false) {
+										LOGPRINTERROR("300");
+									}
+								}
+								else if(collection.equals("TM")){//TreeMap
+									if(SEARCH("TM",data)==false) {
+										LOGPRINTERROR("300");
+									}
+								}
+								else {//ERROR : incorrect collection
+									System.out.println("ERROR : 300");
+									LOGPRINTERROR("300");
+								}
+							}
 						}
 						else {
 							LOGPRINTERROR("300");
 						}
 					}
 					else if(command.equals("UPDATE")) {/*If the command is "UPDATE"*/
-						System.out.println("===============");
 
 						////start: Get 'data' argument of command 'UPDATE'////
 						countTokens = st.countTokens();//the number of tokencount after command
-						System.out.println(countTokens);
 
-						if(countTokens>0) {//인자가 있는지 확인
+						if(countTokens>0) {//check the argument
 							String temp_update[] = new String[countTokens];
 							data="";
 							for(i=0;i<countTokens;i++) {
 								temp_update[i]=st.nextToken();
-								System.out.println(temp_update[i]);
 							}
 
 							for(i=0;i<countTokens-1;i++) {
@@ -270,27 +283,29 @@ public class Manager {
 							data=data+temp_update[i];
 
 							if(data.contains("/")){
-								datatoken = new StringTokenizer(data, "/");							
-								bookname=datatoken.nextToken();
-								newbookname=datatoken.nextToken();
-								System.out.println("책이름 :"+bookname);
-								System.out.println("업데이트 :"+newbookname);
+								datatoken = new StringTokenizer(data, "/");		
 
-								System.out.println("data : "+data);
+								datacountTokens = datatoken.countTokens();
+								if(datacountTokens==2) {
+									bookname=datatoken.nextToken();
+									newbookname=datatoken.nextToken();
 
-
-								if(UPDATE(bookname, newbookname)==true) {
-									flog.newLine();
-									flog.write("========= UPDATE =========");
-									flog.newLine();
-									flog.write(bookname+" -> "+newbookname);
-									flog.newLine();
-									flog.write("==========================");
-									flog.newLine();
+									if(UPDATE(bookname, newbookname)==true) {
+										flog.newLine();
+										flog.write("========= UPDATE =========");
+										flog.newLine();
+										flog.write(bookname+" -> "+newbookname);
+										flog.newLine();
+										flog.write("==========================");
+										flog.newLine();
+									}
+									else {
+										LOGPRINTERROR("400");		
+										System.out.println("Debug: UPDATE1");
+									}
 								}
 								else {
 									LOGPRINTERROR("400");		
-									System.out.println("Debug: UPDATE1");
 								}
 							}
 							else {//ERROR : no argument about update bookname
@@ -351,7 +366,6 @@ public class Manager {
 	public boolean PRINT(String collection) throws IOException{
 		try {
 			//String booknode;
-			System.out.println("======print about collection info=====");
 			bookcollection.printNode(collection, flog);
 			return true;
 		}

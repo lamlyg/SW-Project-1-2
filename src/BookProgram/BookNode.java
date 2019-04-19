@@ -8,16 +8,22 @@ package BookProgram;
  */
 
 public class BookNode {
+	//Field//
 	private String title;	//Book name;
 	private String author;	//Book author;
 
+	//Constructor//
 	public BookNode() {
 
 	}
+	
+	//Constructor with Fields//
 	public BookNode(String title, String author) {
 		this.title = title;
 		this.author = author;
 	}
+	
+	//Setter & Getter//
 	public void setTitle(String title) {
 		this.title = title;
 	}

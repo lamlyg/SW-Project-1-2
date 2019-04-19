@@ -1,10 +1,12 @@
-﻿ADD 러닝 스파크/홀든 카로/애플
+﻿ADD 러닝 스파크/홀든 카로
 ADD 머신 러닝/스티븐 잡스
 ADD 고 프로그래밍/빌 게이츠
 ADD 넘파이/티 아카데미
 ADD 함수/수학 박사
-PRINT AL
-SEARCH AL 러닝 스파크
+PRINT TM
+SEARCH TM 러닝 스파크
 UPDATE 러닝 스파크/러닝 하둡
-PRINT AL
+PRINT TM
+SEARCH TM 러닝 스파크
+SEARCH TM 러닝 하둡
 EXIT
