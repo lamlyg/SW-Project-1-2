@@ -170,7 +170,7 @@ public class Manager {
 							LOGPRINTERROR("200");
 						}
 
-						
+
 
 
 					}
@@ -200,39 +200,33 @@ public class Manager {
 							System.out.println("data : "+data);
 
 							if(collection.equals("AL")){//ArrayList
-								if(SEARCH("AL")==true){
-								}
-								else {
+								if(SEARCH("AL",data)==false) {
+									LOGPRINTERROR("300");
 								}
 							}
 							else if(collection.equals("LL")){//LinkedList
-								if(SEARCH("LL")==true){
-								}
-								else {
+								if(SEARCH("LL",data)==false) {
+									LOGPRINTERROR("300");
 								}
 							}
 							else if(collection.equals("HS")){//HashSet
-								if(SEARCH("HS")==true){
-								}
-								else {
+								if(SEARCH("HS",data)==false) {
+									LOGPRINTERROR("300");
 								}
 							}
 							else if(collection.equals("TS")){//TreeSet
-								if(SEARCH("TS")==true){
-								}
-								else {
+								if(SEARCH("TS",data)==false) {
+									LOGPRINTERROR("300");
 								}
 							}
 							else if(collection.equals("HM")){//HashMap
-								if(SEARCH("HM")==true){
-								}
-								else {
+								if(SEARCH("HM",data)==false) {
+									LOGPRINTERROR("300");
 								}
 							}
 							else if(collection.equals("TM")){//TreeMap
-								if(SEARCH("TM")==true){
-								}
-								else {
+								if(SEARCH("TM",data)==false) {
+									LOGPRINTERROR("300");
 								}
 							}
 							else {//ERROR : incorrect collection
@@ -240,13 +234,6 @@ public class Manager {
 								LOGPRINTERROR("300");
 							}
 
-							flog.newLine();
-							flog.write("========= SEARCH =========");
-							flog.newLine();
-							//flog.write("+ "+data);
-							flog.newLine();
-							flog.write("==========================");
-							flog.newLine();							
 						}
 						else {
 							LOGPRINTERROR("300");
@@ -279,20 +266,29 @@ public class Manager {
 								System.out.println("책이름 :"+bookname);
 								System.out.println("업데이트 :"+newbookname);
 
+								System.out.println("data : "+data);
+								
+								
+								if(UPDATE(bookname, newbookname)==true) {
+									flog.newLine();
+									flog.write("========= UPDATE =========");
+									flog.newLine();
+									flog.write(bookname+" -> "+newbookname);
+									flog.newLine();
+									flog.write("==========================");
+									flog.newLine();
+								}
+								else {
+									LOGPRINTERROR("400");		
+									System.out.println("Debug: UPDATE1");
+								}
 							}
 							else {//ERROR : no argument about update bookname
 								LOGPRINTERROR("400");
+								System.out.println("Debug: UPDATE2");
 							}
 							////end: Get 'data' argument of command 'UPDATE'////
 
-							System.out.println("data : "+data);
-							flog.newLine();
-							flog.write("========= UPDATE =========");
-							flog.newLine();
-							//							flog.write("300");
-							flog.newLine();
-							flog.write("==========================");
-							flog.newLine();
 						}
 						else {//ERROR : no argument
 							System.out.println("ERROR : 400");
@@ -353,36 +349,31 @@ public class Manager {
 			return false;
 		}
 	}
-	
-	public boolean SEARCH(String collection) throws IOException{
-		try {
-			if(collection.equals("AL")) {
-			}
-			else if(collection.equals("LL")) {
-			}
-			else if(collection.equals("HS")) {
-			}
-			else if(collection.equals("TS")) {
-			}
-			else if(collection.equals("HM")) {
-			}
-			else if(collection.equals("TM")) {
-			}
-			else {
-				return false;
-			}
-			return true;
+
+	public boolean SEARCH(String collection,String search) throws IOException{
+		boolean val=false;
+		String book=bookcollection.searchNode(collection, search);
+		if(book!=null) {
+			flog.newLine();
+			flog.write("========= SEARCH =========");
+			flog.newLine();
+			flog.write(book);
+			flog.newLine();
+			flog.write("==========================");
+			flog.newLine();
+			val=true;
 		}
-		catch(Exception e) {
-			return false;
+		else {
+			val=false;
 		}
+		return val;
 	}
 	public boolean UPDATE(String beforename, String aftername) throws IOException{
-		try {
-			
+		if(bookcollection.updateNode(beforename, aftername)==true){
 			return true;
 		}
-		catch(Exception e) {
+		else {
+			System.out.println("Debug: UPDATE3");
 			return false;
 		}
 	}

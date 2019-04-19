@@ -4,7 +4,7 @@ ADD 고 프로그래밍/빌 게이츠
 ADD 넘파이/티 아카데미
 ADD 함수/수학 박사
 PRINT TM
-SEARCH AL 러닝 스파크
+SEARCH TM 러닝 스파크
 UPDATE 러닝 스파크/러닝 하둡
 PRINT HS
 EXIT
