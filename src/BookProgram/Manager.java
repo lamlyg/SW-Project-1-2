@@ -54,6 +54,7 @@ public class Manager {
 				StringTokenizer datatoken;//use in tokening ADD argument by '/'
 
 				int countTokens=0;
+				int datacountTokens=0;
 				int i=0;
 
 				/*Decode command*/
@@ -94,24 +95,33 @@ public class Manager {
 							System.out.println(s);
 
 							if(data.contains("/")){
-								datatoken = new StringTokenizer(data, "/");							
-								bookname=datatoken.nextToken();
-								author=datatoken.nextToken();
-								System.out.println("책이름 :"+bookname);
-								System.out.println("저자 :"+author);
+								datatoken = new StringTokenizer(data, "/");		
+								datacountTokens = datatoken.countTokens();
+								System.out.println("datacountTokens : "+datacountTokens);
 
-								if(ADD(bookname, author)==true) {
-									flog.newLine();							
-									flog.write("========= ADD =========");
-									flog.newLine();
-									flog.write("+ "+data);
-									flog.newLine();
-									flog.write("=======================");
-									flog.newLine();										
+								if(datacountTokens==2) {
+									bookname=datatoken.nextToken();
+									author=datatoken.nextToken();
+									System.out.println("책이름 :"+bookname);
+									System.out.println("저자 :"+author);
+									if((ADD(bookname, author)==true)) {
+										flog.newLine();							
+										flog.write("========= ADD =========");
+										flog.newLine();
+										flog.write("+ "+data);
+										flog.newLine();
+										flog.write("=======================");
+										flog.newLine();										
+									}
+									else {
+										LOGPRINTERROR("100");
+									}
+
 								}
 								else {
 									LOGPRINTERROR("100");
 								}
+
 							}
 							else {
 								LOGPRINTERROR("100");
@@ -267,8 +277,8 @@ public class Manager {
 								System.out.println("업데이트 :"+newbookname);
 
 								System.out.println("data : "+data);
-								
-								
+
+
 								if(UPDATE(bookname, newbookname)==true) {
 									flog.newLine();
 									flog.write("========= UPDATE =========");
