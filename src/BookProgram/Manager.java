@@ -23,7 +23,7 @@ public class Manager {
 	File log = new File("log.txt");
 	
 	BufferedReader fin;	//input stream ( for BookList.txt, command.txt )
-	BufferedWriter flog = new BufferedWriter(new FileWriter(log,false));//output stream  (for log.txt )
+	BufferedWriter flog = new BufferedWriter(new FileWriter(log,true));//output stream  (for log.txt )
 	BufferedReader bookin;
 	
 	myCollection bookcollection =new myCollection();
