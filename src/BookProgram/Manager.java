@@ -21,11 +21,11 @@ public class Manager {
 	File file;
 	File booklist = new File("BookList.txt");
 	File log = new File("log.txt");
-	
+
 	BufferedReader fin;	//input stream ( for BookList.txt, command.txt )
-	BufferedWriter flog = new BufferedWriter(new FileWriter(log,true));//output stream  (for log.txt )
+	BufferedWriter flog = new BufferedWriter(new FileWriter(log,false));//output stream  (for log.txt )
 	BufferedReader bookin;
-	
+
 	myCollection bookcollection =new myCollection();
 
 	public Manager() throws IOException {//constructor
@@ -41,7 +41,7 @@ public class Manager {
 			try {
 				fin = new BufferedReader(new FileReader(file));
 				bookin = new BufferedReader(new FileReader(booklist));
-				
+
 				String s;
 				String book;
 				String command;//use in getting command
@@ -51,11 +51,12 @@ public class Manager {
 				String bookname="";
 				String author="";
 				String newbookname="";
-
+				String serachresult="";
+				
 				StringTokenizer st; //used in token
 				StringTokenizer datatoken;//use in tokening ADD argument by '/'
 				StringTokenizer booktoken;//use in tokening the book data in BookList.txt
-				
+
 				int countTokens=0;
 				int datacountTokens=0;
 				int bookcountTokens=0;
@@ -75,31 +76,31 @@ public class Manager {
 						String booktext = new String(book.getBytes(),"utf-8");		//
 						booktext = booktext.replace("\uFEFF", "");					//
 						//solve the error : can't read command of the first sentence//
-						
+
 						booktoken = new StringTokenizer(book, "/");		
 						bookcountTokens = booktoken.countTokens();
-						
-						
+
+
 						if(bookcountTokens==2) {
 							bookname=booktoken.nextToken();
 							author=booktoken.nextToken();
-							
+
 							if((ADD(bookname, author)==false)) {
 								System.out.println("ERROR : BookList insert");									
 							}		
 						}
 					}
-					
+
 					st = new StringTokenizer(text, " ");//token the text in text file
 					System.out.println(s);//check the commands in console
 
 					command= st.nextToken();//(get command)
-					
+
 					if(command.equals("ADD")){/*If the command is "ADD"*/
-						
+
 						////start: Get 'data' argument of command 'ADD'////
 						countTokens = st.countTokens();//the number of tokencount after command
-						
+
 						if(countTokens>0) {//check the existence of the argument 
 							String temp_add[] = new String[countTokens];
 							data="";//reinitialize
@@ -120,27 +121,31 @@ public class Manager {
 								if(datacountTokens==2) {
 									bookname=datatoken.nextToken();
 									author=datatoken.nextToken();
-									
-									if((ADD(bookname, author)==true)) {
-										flog.newLine();							
-										flog.write("========= ADD =========");
-										flog.newLine();
-										flog.write("+ "+data);
-										flog.newLine();
-										flog.write("=======================");
-										flog.newLine();										
-									}
-									else {
+
+									if(SEARCH("AL",bookname)!=null) {//ERROR : overlap of the bookname
 										LOGPRINTERROR("100");
 									}
-
+									else {
+										if((ADD(bookname, author)==true)) {
+											flog.newLine();							
+											flog.write("========= ADD =========");
+											flog.newLine();
+											flog.write("+ "+data);
+											flog.newLine();
+											flog.write("=======================");
+											flog.newLine();										
+										}
+										else {
+											LOGPRINTERROR("100");
+										}
+									}
 								}
-								else {
+								else {//ERROR : the lack or excess of the number of argument
 									LOGPRINTERROR("100");
 								}
 
 							}
-							else {
+							else {//ERROR : incorrect form
 								LOGPRINTERROR("100");
 							}
 						}
@@ -150,12 +155,12 @@ public class Manager {
 						}
 					}
 					else if(command.equals("PRINT")){/*If the command is "PRINT"*/
-						
+
 						countTokens = st.countTokens();
 
 						if(countTokens==1) {//check the collection is existed
 							collection = st.nextToken();//i==1 (get the kind of collection)
-							
+
 							if(collection.equals("AL")){//ArrayList
 								if(PRINT("AL")==false){
 									LOGPRINTERROR("200");
@@ -195,18 +200,14 @@ public class Manager {
 							System.out.println("ERROR : 200");
 							LOGPRINTERROR("200");
 						}
-
-
-
-
 					}
 					else if(command.equals("SEARCH")) {/*If the command is "SEARCH"*/
-					
+
 						collection = st.nextToken();//i==1 (get the kind of collection)
 
 						////start: Get 'data' argument of command 'SEARCH'////
 						countTokens = st.countTokens();//the number of tokencount after command
-						
+
 						if(countTokens>0) {//check the argument
 							String temp_search[] = new String[countTokens];
 							data="";
@@ -219,40 +220,100 @@ public class Manager {
 							}
 							data=data+temp_search[i];
 							////end: Get 'data' argument of command 'SEARCH'////
-							
+
 							if(data.contains("/")){
 								LOGPRINTERROR("300");
 							}
 							else {
 
 								if(collection.equals("AL")){//ArrayList
-									if(SEARCH("AL",data)==false) {
+									serachresult=SEARCH("AL",data);
+									if(serachresult==null) {
 										LOGPRINTERROR("300");
+									}
+									else {
+										flog.newLine();
+										flog.write("========= SEARCH =========");
+										flog.newLine();
+										flog.write(serachresult);
+										flog.newLine();
+										flog.write("==========================");
+										flog.newLine();
 									}
 								}
 								else if(collection.equals("LL")){//LinkedList
-									if(SEARCH("LL",data)==false) {
+									serachresult=SEARCH("LL",data);
+									if(serachresult==null) {
 										LOGPRINTERROR("300");
+									}
+									else {
+										flog.newLine();
+										flog.write("========= SEARCH =========");
+										flog.newLine();
+										flog.write(serachresult);
+										flog.newLine();
+										flog.write("==========================");
+										flog.newLine();
 									}
 								}
 								else if(collection.equals("HS")){//HashSet
-									if(SEARCH("HS",data)==false) {
+									serachresult=SEARCH("HS",data);
+									if(serachresult==null) {
 										LOGPRINTERROR("300");
+									}
+									else {
+										flog.newLine();
+										flog.write("========= SEARCH =========");
+										flog.newLine();
+										flog.write(serachresult);
+										flog.newLine();
+										flog.write("==========================");
+										flog.newLine();
 									}
 								}
 								else if(collection.equals("TS")){//TreeSet
-									if(SEARCH("TS",data)==false) {
+									serachresult=SEARCH("TS",data);
+									if(serachresult==null) {
 										LOGPRINTERROR("300");
+									}
+									else {
+										flog.newLine();
+										flog.write("========= SEARCH =========");
+										flog.newLine();
+										flog.write(serachresult);
+										flog.newLine();
+										flog.write("==========================");
+										flog.newLine();
 									}
 								}
 								else if(collection.equals("HM")){//HashMap
-									if(SEARCH("HM",data)==false) {
+									serachresult=SEARCH("HM",data);
+									if(serachresult==null) {
 										LOGPRINTERROR("300");
+									}
+									else {
+										flog.newLine();
+										flog.write("========= SEARCH =========");
+										flog.newLine();
+										flog.write(serachresult);
+										flog.newLine();
+										flog.write("==========================");
+										flog.newLine();
 									}
 								}
 								else if(collection.equals("TM")){//TreeMap
-									if(SEARCH("TM",data)==false) {
+									serachresult=SEARCH("TM",data);
+									if(serachresult==null) {
 										LOGPRINTERROR("300");
+									}
+									else {
+										flog.newLine();
+										flog.write("========= SEARCH =========");
+										flog.newLine();
+										flog.write(serachresult);
+										flog.newLine();
+										flog.write("==========================");
+										flog.newLine();
 									}
 								}
 								else {//ERROR : incorrect collection
@@ -290,18 +351,23 @@ public class Manager {
 									bookname=datatoken.nextToken();
 									newbookname=datatoken.nextToken();
 
-									if(UPDATE(bookname, newbookname)==true) {
-										flog.newLine();
-										flog.write("========= UPDATE =========");
-										flog.newLine();
-										flog.write(bookname+" -> "+newbookname);
-										flog.newLine();
-										flog.write("==========================");
-										flog.newLine();
+									if(SEARCH("AL",bookname)==null) {//ERROR : overlap of the bookname
+										LOGPRINTERROR("400");	
 									}
 									else {
-										LOGPRINTERROR("400");		
-										System.out.println("Debug: UPDATE1");
+										if(UPDATE(bookname, newbookname)==true) {
+											flog.newLine();
+											flog.write("========= UPDATE =========");
+											flog.newLine();
+											flog.write(bookname+" -> "+newbookname);
+											flog.newLine();
+											flog.write("==========================");
+											flog.newLine();
+										}
+										else {
+											LOGPRINTERROR("400");		
+											System.out.println("Debug: UPDATE1");
+										}
 									}
 								}
 								else {
@@ -374,21 +440,14 @@ public class Manager {
 		}
 	}
 
-	public boolean SEARCH(String collection,String search) throws IOException{
-		boolean val=false;
+	public String SEARCH(String collection,String search) throws IOException{
+		String val=null;
 		String book=bookcollection.searchNode(collection, search);
 		if(book!=null) {
-			flog.newLine();
-			flog.write("========= SEARCH =========");
-			flog.newLine();
-			flog.write(book);
-			flog.newLine();
-			flog.write("==========================");
-			flog.newLine();
-			val=true;
+			val=book;
 		}
 		else {
-			val=false;
+			val=null;
 		}
 		return val;
 	}
