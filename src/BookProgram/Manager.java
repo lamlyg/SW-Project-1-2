@@ -26,6 +26,7 @@ public class Manager {
 	BufferedWriter flog = new BufferedWriter(new FileWriter(log,true));//output stream  (for log.txt )
 	BufferedReader bookin;
 
+	//myCollection 
 	myCollection bookcollection =new myCollection();
 
 	public Manager() throws IOException {//constructor
@@ -37,7 +38,7 @@ public class Manager {
 
 		file = new File(cmd);
 
-		if(file.exists()) {
+		if(file.exists()) {//check the existence of the file 'command.txt'
 			try {
 				fin = new BufferedReader(new FileReader(file));
 				bookin = new BufferedReader(new FileReader(booklist));
@@ -322,7 +323,7 @@ public class Manager {
 								}
 							}
 						}
-						else {
+						else {//ERROR
 							LOGPRINTERROR("300");
 						}
 					}
@@ -355,7 +356,7 @@ public class Manager {
 										LOGPRINTERROR("400");	
 									}
 									else {
-										if(UPDATE(bookname, newbookname)==true) {
+										if(UPDATE(bookname, newbookname)==true) {//if Success UPDATE -> print the result in log.txt
 											flog.newLine();
 											flog.write("========= UPDATE =========");
 											flog.newLine();
@@ -401,19 +402,20 @@ public class Manager {
 
 				}
 
-				fin.close();
-				flog.close();
+				fin.close();//close the filestream
+				flog.close();//close the filestream
 			}
-			catch(FileNotFoundException e) {
+			catch(FileNotFoundException e) {//catch the error
 				//TODO
 			}
 		}
 		else {
-			System.out.println("Error : The 'command.txt' file is no exist.");
+			System.out.println("Error : The 'command.txt' file is no exist.");//ERROR : the non-existence of file
 		}
 
 	}
 
+	//ADD//
 	public boolean ADD(String title,String author) throws IOException{
 		try {
 			BookNode book = new BookNode();
@@ -429,6 +431,7 @@ public class Manager {
 		}
 	}
 
+	//PRINT//
 	public boolean PRINT(String collection) throws IOException{
 		try {
 			//String booknode;
@@ -440,6 +443,7 @@ public class Manager {
 		}
 	}
 
+	//SEARCH//
 	public String SEARCH(String collection,String search) throws IOException{
 		String val=null;
 		String book=bookcollection.searchNode(collection, search);
@@ -451,6 +455,8 @@ public class Manager {
 		}
 		return val;
 	}
+	
+	//UPDATE
 	public boolean UPDATE(String beforename, String aftername) throws IOException{
 		if(bookcollection.updateNode(beforename, aftername)==true){
 			return true;
@@ -461,6 +467,7 @@ public class Manager {
 		}
 	}
 
+	//LOGPRINTERROR -> print the information about error on log.txt 
 	public void LOGPRINTERROR(String errorcode) throws IOException{
 		flog.newLine();
 		flog.write("========= ERROR =========");

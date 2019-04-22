@@ -25,6 +25,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
+//main class
 public class main {
 	public static void main(String [] args) throws IOException{
 

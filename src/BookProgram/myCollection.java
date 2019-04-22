@@ -15,6 +15,7 @@ import java.util.*;
 
 public class myCollection {
 
+	///////////Field//////////
 	//Collectiion
 	private ArrayList<BookNode> al; 
 	private LinkedList<BookNode> ll;
@@ -23,6 +24,7 @@ public class myCollection {
 	private HashMap<String, String> hm;	//Key : title, value : author
 	private TreeMap<String, String> tm; //Key : title, value : author
 
+	/////////constructor////////////
 	public myCollection(){
 		al = new ArrayList<BookNode>();
 		ll = new LinkedList<BookNode>();
@@ -33,6 +35,9 @@ public class myCollection {
 		tm = new TreeMap<String, String>();
 	}
 
+	
+	/////////////Method////////////
+	
 	/*Push method*/
 	public void addNode(BookNode book){
 		al.add(book);
@@ -47,7 +52,7 @@ public class myCollection {
 	public void printNode(String collection, BufferedWriter flog){
 		String node;
 		try {
-			if(collection.equals("AL")) {
+			if(collection.equals("AL")) {//PRINT - ArrayList
 				Collections.sort(al, new Comparator<BookNode>() {
 
 					@Override
@@ -72,7 +77,7 @@ public class myCollection {
 				flog.write("=========================");
 				flog.newLine();
 			}
-			else if(collection.equals("LL")) {
+			else if(collection.equals("LL")) {//PRINT - LinkedList
 
 				Collections.sort(ll, new Comparator<BookNode>() {
 
@@ -98,7 +103,7 @@ public class myCollection {
 				flog.write("=========================");
 				flog.newLine();
 			}
-			else if(collection.equals("HS")) {//no sort
+			else if(collection.equals("HS")) {//PRINT(no sort) - HashSet
 				Iterator<BookNode> iterator = hs.iterator();
 
 				flog.newLine();
@@ -114,7 +119,7 @@ public class myCollection {
 				flog.write("=========================");
 				flog.newLine();
 			}
-			else if(collection.equals("TS")) {
+			else if(collection.equals("TS")) {//PRINT - TreeSet
 				Iterator<BookNode> iterator = ts.iterator();
 
 				flog.newLine();
@@ -130,7 +135,7 @@ public class myCollection {
 				flog.write("=========================");
 				flog.newLine();
 			}
-			else if(collection.equals("HM")) {//no sort
+			else if(collection.equals("HM")) {//PRINT(no sort) - HashMap
 				//get
 				Set<String> keyset = hm.keySet();
 				Iterator<String> iterator = keyset.iterator();
@@ -152,7 +157,7 @@ public class myCollection {
 				flog.write("=========================");
 				flog.newLine();
 			}
-			else if(collection.equals("TM")) {
+			else if(collection.equals("TM")) {//PRINT - TreeMap
 				Set<String> keyset = tm.keySet();
 				Iterator<String> iterator = keyset.iterator();
 
@@ -174,7 +179,7 @@ public class myCollection {
 			}
 
 		}
-		catch(Exception e){
+		catch(Exception e){//Exception
 			System.out.println("ERROR : PRINT");
 		}
 	}
@@ -182,21 +187,21 @@ public class myCollection {
 	public String searchNode(String collection, String searchnode) {
 		String val = null;
 
-		if(collection.equals("AL")) {
+		if(collection.equals("AL")) {//SEARCH - ArrayList
 			for(int i=0; i<al.size();i++) {
 				if((al.get(i).getTitle()).equals(searchnode)) {
 					val=al.get(i).getTitle()+"/"+al.get(i).getAuthor();
 				}
 			}
 		}
-		else if(collection.equals("LL")) {
+		else if(collection.equals("LL")) {//SEARCH - LinkedList
 			for(int i=0; i<ll.size();i++) {
 				if((ll.get(i).getTitle()).equals(searchnode)) {
 					val=ll.get(i).getTitle()+"/"+ll.get(i).getAuthor();
 				}
 			}
 		}
-		else if(collection.equals("HS")) {
+		else if(collection.equals("HS")) {//SEARCH - HashSet
 			Iterator<BookNode> iterator = hs.iterator();
 			while(iterator.hasNext()) {
 				BookNode book = (BookNode) iterator.next();
@@ -206,7 +211,7 @@ public class myCollection {
 			}
 
 		}
-		else if(collection.equals("TS")) {
+		else if(collection.equals("TS")) {//SEARCH - TreeSet
 			Iterator<BookNode> iterator = ts.iterator();
 
 			while(iterator.hasNext()) {
@@ -216,7 +221,7 @@ public class myCollection {
 				}
 			}
 		}
-		else if(collection.equals("HM")) {
+		else if(collection.equals("HM")) {//SEARCH - HashMap
 			//get
 			Set<String> keyset = hm.keySet();
 			Iterator<String> iterator = keyset.iterator();
@@ -233,7 +238,7 @@ public class myCollection {
 			}
 
 		}
-		else if(collection.equals("TM")) {
+		else if(collection.equals("TM")) {//SEARCH - TreeMap
 			//get
 			Set<String> keyset = tm.keySet();
 			Iterator<String> iterator = keyset.iterator();
