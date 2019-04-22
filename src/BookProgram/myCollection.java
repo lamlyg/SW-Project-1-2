@@ -38,12 +38,7 @@ public class myCollection {
 		al.add(book);
 		ll.add(book);
 		hs.add(book);
-		//		if(ts.isEmpty()) {
-		//			ts.headSet(book);
-		//		}
-		//		else {
-		//			ts.add(book);
-		//		}
+		
 		ts.add(book);
 		hm.put(book.getTitle(), book.getAuthor());
 		tm.put(book.getTitle(), book.getAuthor());
@@ -261,11 +256,11 @@ public class myCollection {
 		return val;
 	}
 	/*Update method*/
-	public Boolean updateNode(String beforename, String aftername) {
-		Boolean flag=false;
-		Boolean findflag=false;
-		String hs_author;
-		String ts_author;
+	public boolean updateNode(String beforename, String aftername) {
+		boolean flag=false;
+		boolean findflag=false;
+		String author;
+		//String ts_author;
 
 		for(int i=0; i<al.size();i++) {
 			if((al.get(i).getTitle()).equals(beforename)) {
@@ -274,77 +269,23 @@ public class myCollection {
 		}
 
 		if(findflag==true) {
+			
 			for(int i=0; i<al.size();i++) {
-				if((al.get(i).getTitle()).equals(beforename)) {
-					al.set(i, new BookNode(aftername,al.get(i).getAuthor()));
+				BookNode book = al.get(i);
+				if(book.getTitle().equals(beforename)) {
+					book.setTitle(aftername);
+					break;
 				}
 			}
+			
+			author = hm.get(beforename);//search the key->find value(author)
+			
+			hm.remove(beforename);
+			hm.put(aftername, author);//update hash map
 
-
-			for(int i=0; i<ll.size();i++) {
-				if((ll.get(i).getTitle()).equals(beforename)) {
-					ll.set(i, new BookNode(aftername,ll.get(i).getAuthor()));
-				}
-			}
-
-
-//			Iterator<BookNode> hs_iterator = hs.iterator();
-//			while(hs_iterator.hasNext()) {
-//				BookNode hs_book = (BookNode) hs_iterator.next();
-//				if(hs_book.getTitle().equals(beforename)) {
-//					hs_author=hs_book.getAuthor();
-//					hs_iterator.remove();
-//					hs.add(new BookNode(aftername,hs_author));
-//				}
-//			}
-//
-//
-//			Iterator<BookNode> ts_iterator = ts.iterator();
-//
-//			while(ts_iterator.hasNext()) {
-//				BookNode ts_book = ts_iterator.next();
-//				if(ts_book.getTitle().equals(beforename)) {
-//					ts_author=ts_book.getAuthor();
-//					ts_iterator.remove();
-//					ts.add(new BookNode(aftername,ts_author));
-//				}
-//			}
-//
-//
-//			//get
-//			Set<String> hm_keyset = hm.keySet();
-//			Iterator<String> hm_iterator = hm_keyset.iterator();
-//
-//			String hm_k;
-//			String hm_v;
-//
-//			while(hm_iterator.hasNext()) {
-//				hm_k=(String)hm_iterator.next();
-//				if(hm_k.equals(beforename)) {
-//
-//					hm_v=(String)hm.get(hm_k);
-//					hm.remove(hm_k);
-//					hm.put(aftername, hm_v);
-//				}
-//			}
-//
-//
-//
-//			Set<String> tm_keyset = tm.keySet();
-//			Iterator<String> tm_iterator = tm_keyset.iterator();
-//
-//			String tm_k;
-//			String tm_v;
-//
-//			while(tm_iterator.hasNext()) {
-//				tm_k=(String)tm_iterator.next();
-//				if(tm_k.equals(beforename)) {
-//
-//					tm_v=(String)tm.get(tm_k);
-//					tm.remove(tm_k);
-//					tm.put(aftername, tm_v);
-//				}
-//			}
+			tm.remove(beforename);
+			tm.put(aftername, author);//update tree map
+			
 
 			flag=true;
 			return true;

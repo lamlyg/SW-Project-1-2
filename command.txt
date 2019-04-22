@@ -1,4 +1,10 @@
 ﻿ADD 러닝 스파크/홀든 카로
-UPDATE 러닝 스파크/러닝 하둡/머신 러닝
+PRINT TM
+UPDATE 러닝 스파크/머신 러닝
 PRINT AL
+PRINT LL
+PRINT HM
+PRINT HS
+PRINT TM
+PRINT TS 
 EXIT
