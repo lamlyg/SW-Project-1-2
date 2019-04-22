@@ -395,6 +395,8 @@ public class Manager {
 						flog.newLine();
 						flog.write("==========================");
 						flog.newLine();
+						
+						break;
 					}
 					else{/*If the command is unknown*/
 						System.out.println("Error : Unknown command");
