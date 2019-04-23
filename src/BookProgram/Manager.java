@@ -53,7 +53,7 @@ public class Manager {
 				String author="";
 				String newbookname="";
 				String serachresult="";
-				
+
 				StringTokenizer st; //used in token
 				StringTokenizer datatoken;//use in tokening ADD argument by '/'
 				StringTokenizer booktoken;//use in tokening the book data in BookList.txt
@@ -204,127 +204,132 @@ public class Manager {
 					}
 					else if(command.equals("SEARCH")) {/*If the command is "SEARCH"*/
 
-						collection = st.nextToken();//i==1 (get the kind of collection)
+						if(st.hasMoreElements()==false) {//about ERROR : no argument in SEARCH
+							LOGPRINTERROR("300");
+						}
+						else {
+							collection = st.nextToken();//i==1 (get the kind of collection)
 
-						////start: Get 'data' argument of command 'SEARCH'////
-						countTokens = st.countTokens();//the number of tokencount after command
+							////start: Get 'data' argument of command 'SEARCH'////
+							countTokens = st.countTokens();//the number of tokencount after command
 
-						if(countTokens>0) {//check the argument
-							String temp_search[] = new String[countTokens];
-							data="";
-							for(i=0;i<countTokens;i++) {
-								temp_search[i]=st.nextToken();
-							}
+							if(countTokens>0) {//check the argument
+								String temp_search[] = new String[countTokens];
+								data="";
+								for(i=0;i<countTokens;i++) {
+									temp_search[i]=st.nextToken();
+								}
 
-							for(i=0;i<countTokens-1;i++) {
-								data = data+temp_search[i]+" ";
-							}
-							data=data+temp_search[i];
-							////end: Get 'data' argument of command 'SEARCH'////
+								for(i=0;i<countTokens-1;i++) {
+									data = data+temp_search[i]+" ";
+								}
+								data=data+temp_search[i];
+								////end: Get 'data' argument of command 'SEARCH'////
 
-							if(data.contains("/")){
-								LOGPRINTERROR("300");
-							}
-							else {
-
-								if(collection.equals("AL")){//ArrayList
-									serachresult=SEARCH("AL",data);
-									if(serachresult==null) {
-										LOGPRINTERROR("300");
-									}
-									else {
-										flog.newLine();
-										flog.write("========= SEARCH =========");
-										flog.newLine();
-										flog.write(serachresult);
-										flog.newLine();
-										flog.write("==========================");
-										flog.newLine();
-									}
-								}
-								else if(collection.equals("LL")){//LinkedList
-									serachresult=SEARCH("LL",data);
-									if(serachresult==null) {
-										LOGPRINTERROR("300");
-									}
-									else {
-										flog.newLine();
-										flog.write("========= SEARCH =========");
-										flog.newLine();
-										flog.write(serachresult);
-										flog.newLine();
-										flog.write("==========================");
-										flog.newLine();
-									}
-								}
-								else if(collection.equals("HS")){//HashSet
-									serachresult=SEARCH("HS",data);
-									if(serachresult==null) {
-										LOGPRINTERROR("300");
-									}
-									else {
-										flog.newLine();
-										flog.write("========= SEARCH =========");
-										flog.newLine();
-										flog.write(serachresult);
-										flog.newLine();
-										flog.write("==========================");
-										flog.newLine();
-									}
-								}
-								else if(collection.equals("TS")){//TreeSet
-									serachresult=SEARCH("TS",data);
-									if(serachresult==null) {
-										LOGPRINTERROR("300");
-									}
-									else {
-										flog.newLine();
-										flog.write("========= SEARCH =========");
-										flog.newLine();
-										flog.write(serachresult);
-										flog.newLine();
-										flog.write("==========================");
-										flog.newLine();
-									}
-								}
-								else if(collection.equals("HM")){//HashMap
-									serachresult=SEARCH("HM",data);
-									if(serachresult==null) {
-										LOGPRINTERROR("300");
-									}
-									else {
-										flog.newLine();
-										flog.write("========= SEARCH =========");
-										flog.newLine();
-										flog.write(serachresult);
-										flog.newLine();
-										flog.write("==========================");
-										flog.newLine();
-									}
-								}
-								else if(collection.equals("TM")){//TreeMap
-									serachresult=SEARCH("TM",data);
-									if(serachresult==null) {
-										LOGPRINTERROR("300");
-									}
-									else {
-										flog.newLine();
-										flog.write("========= SEARCH =========");
-										flog.newLine();
-										flog.write(serachresult);
-										flog.newLine();
-										flog.write("==========================");
-										flog.newLine();
-									}
-								}
-								else {//ERROR : incorrect collection
-									System.out.println("ERROR : 300");
+								if(data.contains("/")){
 									LOGPRINTERROR("300");
 								}
+								else {
+
+									if(collection.equals("AL")){//ArrayList
+										serachresult=SEARCH("AL",data);
+										if(serachresult==null) {
+											LOGPRINTERROR("300");
+										}
+										else {
+											flog.newLine();
+											flog.write("========= SEARCH =========");
+											flog.newLine();
+											flog.write(serachresult);
+											flog.newLine();
+											flog.write("==========================");
+											flog.newLine();
+										}
+									}
+									else if(collection.equals("LL")){//LinkedList
+										serachresult=SEARCH("LL",data);
+										if(serachresult==null) {
+											LOGPRINTERROR("300");
+										}
+										else {
+											flog.newLine();
+											flog.write("========= SEARCH =========");
+											flog.newLine();
+											flog.write(serachresult);
+											flog.newLine();
+											flog.write("==========================");
+											flog.newLine();
+										}
+									}
+									else if(collection.equals("HS")){//HashSet
+										serachresult=SEARCH("HS",data);
+										if(serachresult==null) {
+											LOGPRINTERROR("300");
+										}
+										else {
+											flog.newLine();
+											flog.write("========= SEARCH =========");
+											flog.newLine();
+											flog.write(serachresult);
+											flog.newLine();
+											flog.write("==========================");
+											flog.newLine();
+										}
+									}
+									else if(collection.equals("TS")){//TreeSet
+										serachresult=SEARCH("TS",data);
+										if(serachresult==null) {
+											LOGPRINTERROR("300");
+										}
+										else {
+											flog.newLine();
+											flog.write("========= SEARCH =========");
+											flog.newLine();
+											flog.write(serachresult);
+											flog.newLine();
+											flog.write("==========================");
+											flog.newLine();
+										}
+									}
+									else if(collection.equals("HM")){//HashMap
+										serachresult=SEARCH("HM",data);
+										if(serachresult==null) {
+											LOGPRINTERROR("300");
+										}
+										else {
+											flog.newLine();
+											flog.write("========= SEARCH =========");
+											flog.newLine();
+											flog.write(serachresult);
+											flog.newLine();
+											flog.write("==========================");
+											flog.newLine();
+										}
+									}
+									else if(collection.equals("TM")){//TreeMap
+										serachresult=SEARCH("TM",data);
+										if(serachresult==null) {
+											LOGPRINTERROR("300");
+										}
+										else {
+											flog.newLine();
+											flog.write("========= SEARCH =========");
+											flog.newLine();
+											flog.write(serachresult);
+											flog.newLine();
+											flog.write("==========================");
+											flog.newLine();
+										}
+									}
+									else {//ERROR : incorrect collection
+										System.out.println("ERROR : 300");
+										LOGPRINTERROR("300");
+									}
+								}
 							}
-						}
-						else {//ERROR
-							LOGPRINTERROR("300");
+							else {//ERROR
+								LOGPRINTERROR("300");
+							}
 						}
 					}
 					else if(command.equals("UPDATE")) {/*If the command is "UPDATE"*/
@@ -395,7 +400,7 @@ public class Manager {
 						flog.newLine();
 						flog.write("==========================");
 						flog.newLine();
-						
+
 						break;
 					}
 					else{/*If the command is unknown*/
@@ -457,7 +462,7 @@ public class Manager {
 		}
 		return val;
 	}
-	
+
 	//UPDATE
 	public boolean UPDATE(String beforename, String aftername) throws IOException{
 		if(bookcollection.updateNode(beforename, aftername)==true){
