@@ -29,7 +29,7 @@ import java.io.IOException;
 public class main {
 	public static void main(String [] args) throws IOException{
 
-		Manager manager = new Manager();
-		manager.run("command.txt");
+		Manager manager = new Manager();//create Manager instance
+		manager.run("command.txt");//execute the function 'run'
 	}
 }
